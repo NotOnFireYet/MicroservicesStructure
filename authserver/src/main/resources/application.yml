@@ -1,0 +1,10 @@
+server:
+  port: 9004
+
+spring:
+  application:
+    name: AUTH-SERVICE
+
+client:
+  secret: secret
+  id: 1
