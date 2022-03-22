@@ -17,7 +17,7 @@ public class UserAPI {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public String authorizeUser(ParamsTemplate params) {
         log.info("Redirecting to authorization");
         return userService.getTokensOnLogin(params);
