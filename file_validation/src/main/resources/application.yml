@@ -1,0 +1,17 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: FILE-SERVICE
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+
+client:
+  secret: secret
+  id: 1
+
+adapter:
+  url: http://localhost:9002/user/

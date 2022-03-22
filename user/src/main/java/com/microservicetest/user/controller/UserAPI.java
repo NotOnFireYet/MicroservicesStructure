@@ -5,6 +5,7 @@ import com.microservicetest.user.domain.User;
 import com.microservicetest.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -22,16 +23,10 @@ public class UserAPI {
         return userService.getTokensOnLogin(params);
     }
 
-    @GetMapping("/department")
+    @GetMapping("/validate")
     public String getDepartment(@RequestHeader("Authorization") String authHeader){
-        log.info("Fetching department from auth server");
-        return userService.fetchResource(authHeader, "/user/department");
-    }
-
-    @GetMapping("/office")
-    public String getOffice(@RequestHeader("Authorization") String authHeader){
-        log.info("Fetching office from auth server");
-        return userService.fetchResource(authHeader, "/user/office");
+        log.info("Passing request to validate");
+        return userService.checkAuthorized(authHeader);
     }
 
     @PostMapping("/save")

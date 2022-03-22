@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 @Slf4j
 @AllArgsConstructor
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
@@ -35,15 +33,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 AppUser user = tokenService.validateToken(request);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), null, null);
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-                log.info("Set authentication");
                 filterChain.doFilter(request, response);
             } catch (Exception e){
                 log.error("Authorization exception: {}", e.getMessage());
-                response.setHeader("error", e.getMessage());
-                response.setContentType(APPLICATION_JSON_VALUE);
                 Map<String, String> error = new HashMap<>();
-                error.put("error_type", e.getClass().getSimpleName());
-                error.put("error_message", e.getMessage());
+                error.put("authorization_error", e.getMessage());
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         }

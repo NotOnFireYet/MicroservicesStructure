@@ -20,9 +20,9 @@ public class AuthserverApplication {
 	@Bean
 	CommandLineRunner run(UserService userService){
 		return args -> {
-			userService.saveUser(new AppUser(null, "dude123", "1111", "HR", "London", new TokenEntity()));
-			userService.saveUser(new AppUser(null, "john_doe", "2222", "Finance", "Paris", new TokenEntity()));
-			userService.saveUser(new AppUser(null, "jane_doe", "3333", "IT", "Mars", new TokenEntity()));
+			userService.saveUser(new AppUser(null, "dude123", "1111", new TokenEntity()));
+			userService.saveUser(new AppUser(null, "john_doe", "2222", new TokenEntity()));
+			userService.saveUser(new AppUser(null, "jane_doe", "3333", new TokenEntity()));
 		};
 	}
 

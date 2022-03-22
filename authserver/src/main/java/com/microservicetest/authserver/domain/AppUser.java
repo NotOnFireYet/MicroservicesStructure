@@ -25,10 +25,6 @@ public class AppUser {
     @JsonIgnore
     private String password;
 
-    private String department;
-
-    private String office;
-
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn
     private TokenEntity tokenEntity;

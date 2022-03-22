@@ -10,20 +10,17 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,10 +48,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         } catch (Exception e){
             log.error("Authentication exception: {}", e.getMessage());
             Map<String, String> responseMap = new HashMap<>();
-            responseMap.put("error_type", e.getClass().getSimpleName());
-            responseMap.put("error_message", e.getMessage());
+            responseMap.put("client_validation_error", e.getMessage());
             new ObjectMapper().writeValue(response.getOutputStream(), responseMap);
-            throw new HttpServerErrorException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(authToken);
@@ -84,11 +79,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         log.info("Generated tokens for {}", tokens.getUser().getUsername());
 
         ObjectMapper mapper = new ObjectMapper();
-        String tokensJson = mapper.writeValueAsString(tokens);
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(tokensJson);
-        out.flush();
+        mapper.writeValue(response.getOutputStream(), tokens);
     }
 }

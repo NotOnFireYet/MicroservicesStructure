@@ -47,13 +47,6 @@ public class UserService implements UserDetailsService {
         return userRepo.getById(userId);
     }
 
-    public AppUser getActiveUser() {
-        log.info("Fetching active user");
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = (principal instanceof UserDetails) ? ((UserDetails)principal).getUsername() : principal.toString();
-        return userRepo.findByUsername(username);
-    }
-
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = userRepo.findByUsername(username);
         if (user == null) {
