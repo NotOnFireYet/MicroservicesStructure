@@ -44,7 +44,7 @@ public class TokenAPI {
     }
 
     // Takes refresh token, sends back new access token
-    @PostMapping("/refresh")
+    @GetMapping("/refresh")
     public ResponseEntity<?> getNewAccessToken(HttpServletRequest request) {
         AppUser user = tokenService.validateToken(request);
         String accessToken = tokenService.generateAccessToken(user);
